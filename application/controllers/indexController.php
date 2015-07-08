@@ -4,6 +4,7 @@ class indexController extends mainController
 
 {
 
+
     public function indexAction()
     {
 
@@ -11,16 +12,19 @@ class indexController extends mainController
         $this->view->display( 'index' );
     }
 
-    public function listAction()
+    public function listmarkiAction()
     {
 
         $Cars = new Cars();
 
+        $this->Cars = $Cars;
 
         $this->view->data = $Cars->getMarki();
 
 
-        $this->view->display( 'index' );
+        $this->view->display( 'marki' );
     }
+
+
 
 }

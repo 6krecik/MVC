@@ -7,7 +7,9 @@ try
         get_include_path() . PATH_SEPARATOR . getcwd() . '/../application/config/'. PATH_SEPARATOR.
         get_include_path() . PATH_SEPARATOR . getcwd() . '/../application/controllers/' . PATH_SEPARATOR.
         get_include_path() . PATH_SEPARATOR . getcwd() . '/../application/views/' . PATH_SEPARATOR.
-        get_include_path() . PATH_SEPARATOR . getcwd() . '/../application/models/' . PATH_SEPARATOR
+        get_include_path() . PATH_SEPARATOR . getcwd() . '/../application/models/' . PATH_SEPARATOR.
+        get_include_path() . PATH_SEPARATOR . getcwd() . '/../lib/wideimage/'
+
 
     );
 
@@ -45,10 +47,21 @@ try
                 ob_start();
                 $actObject->$requestAction();
 
+                $layout = $actObject->layout;
+
                 $content = ob_get_contents();
                 ob_end_clean();
 
-                include_once( $config['LAYOUT'] );
+                if( isSet( $actObject->layoutName ) && $actObject->layoutName != '' )
+                {
+                    include_once( $actObject->layoutName . '.php' );
+                }
+                else
+                {
+                    include_once( $config['LAYOUT'] );
+                }
+
+
             }
             else
             {

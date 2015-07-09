@@ -7,7 +7,7 @@
     <?php foreach($data as $row){ ?>
     <tr>
         <td> <?php echo $row['marka'] ?> </td>
-        <td> <a href="<?php echo Url::getUrl( 'auta', 'wyswietlKategorie', array ( 'id' => $row[ 'marki_id' ] ) ) ?> "> Pokaz</a>  </td>
+        <td> <a href="<?php echo Url::getUrl( 'auta', 'list', array ( 'id_marki' => $row[ 'marki_id' ] ) ) ?> "> Pokaz</a>  </td>
         <td> <a href="<?php echo Url::getUrl( 'marki', 'usun', array ( 'id' => $row[ 'marki_id' ] ) ) ?> "> Usun</a> </td>
         <?php }?>
 

@@ -6,6 +6,39 @@ class autaController extends mainController
     {
 
         $Cars = new Cars();
+        $page = $this->request->getParam( 'page', 1 );
+        $limit = 10;
+        $from = ( $page - 1 ) * $limit;
+
+        $this->view->pagerConfig = array
+        (
+            'url' => Url::getUrl( 'auta', 'list', array
+            (
+                'page' => 'key_page'
+
+            )),
+            'count' => $Cars->carCount($this->request->getParam('id_marki')),
+            'pack' => $limit,
+            'page' => $page
+        );
+
+        if(!empty($this->request->getParam('id_marki')))
+        {
+            $this->view->pagerConfig['url'] = Url::getUrl('auta', 'list', array('page' => 'key_page', 'id_marki'=>$this->request->getParam('id_marki')));
+        }
+
+        $this->view->data = (!empty($this->request->getParam('id_marki')))? $Cars->getData( $from, $limit, $this->request->getParam('id_marki') ):$Cars->getData( $from, $limit );
+        $this->view->id_marki=$this->request->getParam('id_marki');
+
+
+        $this->view->display( 'auta' );
+    }
+
+/*
+    public function listAction()
+    {
+
+        $Cars = new Cars();
 
 
         $this->view->data = $Cars->getAuta();
@@ -13,6 +46,7 @@ class autaController extends mainController
 
         $this->view->display( 'auta' );
     }
+*/
 
     public function usunAction()
     {
@@ -20,7 +54,16 @@ class autaController extends mainController
         $id = $this->request->getParam('id');
         $Cars = new Cars();
         $Cars->deleteAuta($id);
-        header('Location: '. Url::getUrl('auta','list',null) );
+        if(empty($this->request->getParam('id_marki')))
+        {
+
+            header('Location: '. Url::getUrl('auta','list',null) );
+        }
+        else
+        {
+            header('Location: '. Url::getUrl('auta','list',array('id_marki'=> $this->request->getParam('id_marki'))) );
+
+        }
 
     }
 

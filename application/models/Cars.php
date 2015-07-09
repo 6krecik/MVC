@@ -3,7 +3,38 @@
 class Cars extends Model
 {
 
+    public function carCount($id = false)
+    {
+        if($id==false)
+        {
+            $sth = $this->db->prepare('SELECT COUNT(*) AS count FROM Auta');
+        }
+        else
+        {
+            $sth = $this->db->prepare('SELECT COUNT(*) AS count FROM Auta Where marka_id=:id');
+            $sth->bindParam(':id',$id);
+        }
+        $sth->execute();
+        $result = $sth->fetch();
+        return $result['count'];
+    }
 
+    public function getData( $from, $limit, $id = null )
+    {
+        if($id== null)
+        {
+            $stmt = $this->db->prepare('SELECT * FROM Auta LIMIT :limit OFFSET :offset');
+        }
+        else
+        {
+            $stmt = $this->db->prepare('SELECT * FROM Auta Where marka_id=:id LIMIT :limit OFFSET :offset');
+            $stmt->bindParam(':id',$id);
+        }
+        $stmt->bindParam(':limit',$limit);
+        $stmt->bindParam(':offset',$from);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 
     public function getAuta()
     {

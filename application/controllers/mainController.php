@@ -17,7 +17,11 @@ class mainController
 
         $this->layout = new Layout();
 
+        $this->layout->info= (!empty($this->request->getParam('info')))? $this->request->getParam('info') :null;
+
     }
+
+
 
 
 }

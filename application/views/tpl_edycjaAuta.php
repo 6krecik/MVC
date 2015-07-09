@@ -1,9 +1,4 @@
 
-<html>
-<head>
-
-</head>
-<body>
 
 <table border="1">
 
@@ -49,5 +44,3 @@
 
 </table>
 
-</body>
-</html>

@@ -1,6 +1,3 @@
-<html>
-<head</head>
-<body>
 
 
 <form enctype="multipart/form-data" action="<?php echo Url::getUrl('auta', 'dodaj', null) ?>" method="POST">
@@ -15,7 +12,6 @@
     <?php } ?>
     </select><br>
     <input type="submit" value="zapisz">
+    <?php echo (isset($info))?  $info: false;  ?>
     </form>
 
-</body>
-</html>

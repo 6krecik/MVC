@@ -20,27 +20,34 @@ class autaController extends mainController
         $id = $this->request->getParam('id');
         $Cars = new Cars();
         $Cars->deleteAuta($id);
-        $this->listAction();
+        header('Location: '. Url::getUrl('auta','list',null) );
 
     }
 
     public function edytujAction()
 {
 
+        $id = $this->request->getParam('id');
 
-    $id = $this->request->getParam('id');
-    $this->view->id_edycja=$id;
-    $Cars = new Cars();
-    $this->view->data = $Cars->getAuta();
-    $this->view->display('edycjaAuta');
+        $this->view->id_edycja=$id;
+
+        $Cars = new Cars();
+
+        $this->view->data = $Cars->getAuta();
+
+        $this->view->display('edycjaAuta');
 }
+
 
     public function zapiszEdycjeAction()
     {
 
         $post = $this->request->getPost();
+
         $file = $this->request->getFiles();
+
         $auta_id = $this->request->getParam('id');
+
 
         if(!empty($post['nazwa']) || !empty($post['opis']) || !empty($file['zdjecie']['name'])) {
 
@@ -93,25 +100,77 @@ class autaController extends mainController
 
 
         }
-        $this->listAction();
+        header('Location: '. Url::getUrl('auta','list',null) );
+
 
     }
+
 
     public function wyswietlDodajAction()
     {
         $marka=new markiController();
-        $this->view->data = $marka->wypiszAction();
+
+        $this->view->data = $marka->wypiszAction(true);
+
         $this->view->display( 'dodajAuto' );
     }
 
+
     public function dodajAction()
     {
-        $this->view->display( 'dodajAuto' );
-        if(isset( $this->request['nazwa'])  && isset($this->request['opis']) && isset($this->request['marka']))
+
+        $post = $this->request->getPost();
+
+        $file = $this->request->getFiles();
+
+        if(isset($post['nazwa'])  && isset($post['opis']) && isset($post['marka']))
         {
-            $marka=new markiController();
+            if (!empty($file['zdjecie']['name']))
+            {
+                $file['zdjecie']['name'] = time() . $file['zdjecie']['name'];
+            }
+
+            $tab = array
+            (
+            'nazwa'=>$post['nazwa'],
+            'opis'=>$post['opis'],
+            'marka'=>$post['marka'],
+            'zdjecie'=>$file['zdjecie']['name']
+
+            );
+
+            $Cars = new Cars();
+
+            if($Cars->zapiszAuta($tab))
+            {
+                if (!empty($file['zdjecie']['name'])) {
+                    $image = WideImage::load('zdjecie');
+                    $resized = $image->resize(400, 300);
+                    $resized->saveToFile("./images/" . $file['zdjecie']['name'] . "");
+                    $resized = $image->resize(10, 10);
+                    $resized->saveToFile("./images/mini" . $file['zdjecie']['name'] . "");
+                }
+
+                header('Location: '. Url::getUrl('auta','list',null) );
+            }
+
+            else
+            {
+                $this->view->info ='nie udalo sie';
+                $this->wyswietlDodajAction();
+                header('Location: '. Url::getUrl('auta','wyswietlDodaj',array( 'info'=>'nie udalo sie')) );
+            }
 
         }
+
+    }
+
+    public function  wyswietlKategorieAction()
+    {
+        $id= $this->request->getParam('id');
+        $Cars= new Cars();
+        $this->view->data = $Cars->getKategorieAuta($id);
+        $this->view->display( 'auta' );
 
     }
 

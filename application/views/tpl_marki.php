@@ -1,24 +1,18 @@
 
-<html>
-<head>
 
-</head>
-<body>
 
 <table border="1">
 
-    <tr><td>nazwa</td><td>opis</td><td>zdjecie</td><td>usun</td><td>edytuj</td></tr>
+    <tr><th>marka</th><th>pokaz</th><th>usun</th></tr>
     <?php foreach($data as $row){ ?>
     <tr>
-        <td> <?php echo $row['marki_id']?> </td>
         <td> <?php echo $row['marka'] ?> </td>
+        <td> <a href="<?php echo Url::getUrl( 'auta', 'wyswietlKategorie', array ( 'id' => $row[ 'marki_id' ] ) ) ?> "> Pokaz</a>  </td>
+        <td> <a href="<?php echo Url::getUrl( 'marki', 'usun', array ( 'id' => $row[ 'marki_id' ] ) ) ?> "> Usun</a> </td>
         <?php }?>
-        <td>  </td>
-        <td>  </td>
+
 
     <tr>
 
 </table>
 
-</body>
-</html>

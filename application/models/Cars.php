@@ -29,4 +29,23 @@ class Cars extends Model
 
     }
 
+    public function zapiszAuta($tab)
+    {
+        $sth = $this->db->prepare("INSERT INTO Auta(nazwa, marka_id, opis, zdjecie) VALUES (:nazwa, :marka_id, :opis, :zdjecie)");
+        $sth->bindParam( ':nazwa', $tab['nazwa'] );
+        $sth->bindParam( ':marka_id', $tab['marka'] );
+        $sth->bindParam( ':opis', $tab['opis']);
+        $sth->bindParam( ':zdjecie', $tab['zdjecie']);
+
+            return $sth->execute();
+    }
+
+    public function getKategorieAuta($id)
+    {
+        $sth = $this->db->prepare('Select * FROM Auta Where marka_id=:id');
+        $sth->bindParam('id', $id);
+        $sth->execute();
+        return $sth->fetchAll();
+    }
+
 }

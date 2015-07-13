@@ -19,6 +19,8 @@ class Cars extends Model
         return $result['count'];
     }
 
+
+
     public function getData( $from, $limit, $id = null )
     {
         if($id== null)
@@ -36,6 +38,7 @@ class Cars extends Model
         return $stmt->fetchAll();
     }
 
+
     public function getAuta()
     {
         $sth = $this->db->prepare('SELECT * FROM Auta ');
@@ -43,13 +46,14 @@ class Cars extends Model
         return $sth->fetchAll();
     }
 
+
     public function deleteAuta($id)
     {
         $sth = $this->db->prepare('DELETE FROM Auta Where auta_id=:id');
         $sth->bindParam(':id', $id);
         $sth->execute();
     }
-
+/*
     public function zapiszEdycjeAuta($nazwa, $opis, $zdjecie, $baza_nazwa, $baza_opis, $baza_zdjecie, $auta_id)
     {
 
@@ -58,6 +62,18 @@ class Cars extends Model
 
             return $sth->execute();
 
+    }
+*/
+    public function zapiszEdycjeAuta($tab, $auta_id)
+    {
+        foreach ($tab as $baza => $wartosc)
+        {
+
+            $sth = $this->db->prepare("Update Auta SET ".$baza."=:wartosc Where auta_id=:auta_id");
+            $sth->bindParam(':wartosc', $wartosc);
+            $sth->bindParam(':auta_id', $auta_id);
+            $sth->execute();
+        }
     }
 
     public function zapiszAuta($tab)

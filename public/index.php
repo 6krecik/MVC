@@ -21,6 +21,7 @@ try
 
     spl_autoload_register('MVCAutoload', true, true);
 
+    session_start();
 
     $request = new Request();
 

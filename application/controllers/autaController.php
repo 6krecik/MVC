@@ -5,6 +5,9 @@ class autaController extends mainController
     public function listAction()
     {
 
+        $id = $this->request->getParam('id_edycja');
+        $this->view->id_edycja=$id;
+
         $Cars = new Cars();
         $page = $this->request->getParam( 'page', 1 );
         $limit = 10;
@@ -54,6 +57,8 @@ class autaController extends mainController
         $id = $this->request->getParam('id');
         $Cars = new Cars();
         $Cars->deleteAuta($id);
+        unlink('./images/' . $this->request->getParam('id_zdjecia'));
+        unlink('./images/mini' . $this->request->getParam('id_zdjecia'));
         if(empty($this->request->getParam('id_marki')))
         {
 
@@ -66,7 +71,7 @@ class autaController extends mainController
         }
 
     }
-
+/*
     public function edytujAction()
 {
 
@@ -147,7 +152,60 @@ class autaController extends mainController
 
 
     }
+*/
+    public function zapiszAction()
+    {
+        $tab = array();
+        $auta_id = $this->request->getParam('id');
 
+        If (!empty($this->request->getPost('nazwa')))
+        {
+            $tab['nazwa']= $this->request->getPost('nazwa');
+        }
+
+        If (!empty($this->request->getPost('opis')))
+        {
+            $tab['opis']= $this->request->getPost('opis');
+        }
+
+        If (!empty($this->request->getFiles('zdjecie')['name']))
+        {
+            $new_name = time() . $this->request->getFiles('zdjecie')['name'];
+            $tab['zdjecie']= $new_name;
+
+
+        }
+
+        $Cars = new Cars();
+        $Cars->zapiszEdycjeAuta($tab,$auta_id);
+
+        If (!empty($this->request->getFiles('zdjecie')['name'])) {
+
+            $image = WideImage::load('zdjecie');
+            $resized = $image->resize(400, 300);
+            $resized->saveToFile("./images/" . $new_name . "");
+            $resized = $image->resize(10, 10);
+            $resized->saveToFile("./images/mini" . $new_name . "");
+
+            unlink('./images/' . $this->request->getPost('zdjecie'));
+            unlink('./images/mini' . $this->request->getPost('zdjecie'));
+
+        }
+
+
+
+
+        if(empty($this->request->getParam('id_marki')))
+        {
+            header('Location: '. Url::getUrl('auta','list',null) );
+        }
+        else
+        {
+            header('Location: '. Url::getUrl('auta','list',array('id_marki'=> $this->request->getParam('id_marki'))) );
+
+        }
+
+    }
 
     public function wyswietlDodajAction()
     {

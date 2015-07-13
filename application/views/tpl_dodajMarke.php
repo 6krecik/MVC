@@ -1,6 +1,10 @@
+<div class="login">
+    <div class="tresc">
 <form action="<?php echo Url::getUrl( 'marki', 'zapisz', null  ) ?> " method="POST">
-    <input type="text" name="marka">
+    Podaj marke<br><input type="text" name="marka"><br>
     <input type="submit" name="zapisz" value="zapisz"><br>
     <?php echo (isset($info))?  $info: false;  ?>
 
 </form>
+        </div >
+</div>

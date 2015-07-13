@@ -2,13 +2,13 @@
 
 if( isSet( $pagerConfig ) && $pagerConfig['count'] > 0 && $pagerConfig['count'] > $pagerConfig['pack']) {
 
-    echo '<br />';
+    echo '<br /><div class="page"><ul class="pagination center">';
     if ($pagerConfig['page'] > 10) {
-        echo '<a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] - 10 ), $pagerConfig['url'] ) . '">-10</a> ';
+        echo '<li><a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] - 10 ), $pagerConfig['url'] ) . '">-10</a></li> ';
     }
     if ($pagerConfig['page'] > 1) {
-        echo '<a class="paginator" href="' . str_replace( 'key_page', 1, $pagerConfig['url'] ) . '">FIRST </a> ';
-        echo '<a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] - 1 ), $pagerConfig['url'] ) . '">PREV</a> ';
+        echo '<li><a class="paginator" href="' . str_replace( 'key_page', 1, $pagerConfig['url'] ) . '">FIRST </a></li> ';
+        echo '<li><a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] - 1 ), $pagerConfig['url'] ) . '">PREV</a></li> ';
     }
 
     $counter = $pagerConfig['count'];
@@ -40,19 +40,19 @@ if( isSet( $pagerConfig ) && $pagerConfig['count'] > 0 && $pagerConfig['count'] 
     for ($i = $starter; ($i <= $ender) && ($i <= $pack); $i++) {
         $sAdd = ( $i == 1 ) ? '' : ' ';
         $sBold = ( $i == $page ) ? 'id="currentPage"' : '';
-        echo $sAdd . '<a ' . $sBold . ' class="paginator" href="' . str_replace( 'key_page', $i, $pagerConfig['url'] ) . '">' . $i . '</a>';
+        echo $sAdd . '<li><a ' . $sBold . ' class="paginator" href="' . str_replace( 'key_page', $i, $pagerConfig['url'] ) . '">' . $i . '</a></li>';
     }
 
     if ($pagerConfig['page'] < ceil($counter / 10)) {
-        echo ' <a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] + 1 ), $pagerConfig['url'] ) . '">NEXT</a>';
+        echo ' <li><a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] + 1 ), $pagerConfig['url'] ) . '">NEXT</a></li>';
     }
 
     if ($pagerConfig['page'] <= (ceil($counter / 10)) - 10) {
-        echo ' <a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] + 10 ), $pagerConfig['url'] ) . '">+10</a>';
+        echo '<li> <a class="paginator" href="' . str_replace( 'key_page', ( $pagerConfig['page'] + 10 ), $pagerConfig['url'] ) . '">+10</a></li>';
     }
 
     if ($pagerConfig['page'] != (ceil($counter / 10))) {
 
-        echo ' <a class="paginator" href="' . str_replace( 'key_page', (ceil($counter / 10)), $pagerConfig['url'] ) . '">LAST</a>';
+        echo '<li> <a class="paginator" href="' . str_replace( 'key_page', (ceil($counter / 10)), $pagerConfig['url'] ) . '">LAST</a></li></ul></div>';
     }
 }
